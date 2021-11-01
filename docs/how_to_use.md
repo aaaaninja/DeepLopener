@@ -2,7 +2,7 @@
 
 <iframe width="100%" height="400" src="https://www.youtube.com/embed/iptT7NxNoz4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
   
-1. **Get your [DeepL API_KEY](https://www.deepl.com/en/pro/change-plan#developer)**  
+1. **Get your [DeepL API_KEY](https://www.deepl.com/en/pro/change-plan#developer)** like `12a3b45d-6ef78-910g-1112-12345678abcd:fx`  
    ![free.png](https://cdn-ak.f.st-hatena.com/images/fotolife/t/t3ahat/20210808/20210808042505.png)
    If you use DeepL API Free, you can translate text for max. 500,000 characters/month.
 
@@ -77,7 +77,7 @@ in the upper right corner of the popup window will take you to the document tran
 - "pptx" - Microsoft PowerPoint Document
 - "pdf" - Portable Document Format  
   Please note that in order to translate PDF documents you need to give one-time consent to using the Adobe API via [the account interface](https://www.deepl.com/pro-account/translationSettings).
-  ![PDFTranslationSettings.png](https://github.com/T3aHat/DeepLopener/blob/main/images/PDFTranslationSettings.png)  
+  ![PDFTranslationSettings.png](https://github.com/T3aHat/DeepLopener/raw/main/images/PDFTranslationSettings.png)  
 - "htm / html" - HTML Document
 - "txt" - Plain Text Document  
   Please check out [the official reference document](https://www.deepl.com/docs-api/translating-documents/uploading/) for details.

@@ -20,7 +20,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
     //   'Thank you for installing DeepLopener!\nBefore using this extension, please input "DeepL API_KEY" on options page.'
     // );
     chrome.tabs.create(
-      { url: "https://teahat.ml/DeepLopener/how_to_use" },
+      { url: "https://deeplopener.ml/DeepLopener/how_to_use" },
       (tab) => {
         chrome.runtime.openOptionsPage();
       }

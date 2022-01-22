@@ -12,7 +12,7 @@ On pdf, this extension displays frames showing translated sentences.
 
 # Web site
 
-https://teahat.ml/DeepLopener/
+https://deeplopener.ml/DeepLopener/
 
 # How to use
 

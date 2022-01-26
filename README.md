@@ -36,7 +36,7 @@ For sites whose MIME type is `application/pdf` (local PDF files available!), the
 You can move the translation frame around freely in Drag-and-Drop, and right-clicking on the translation result frame will remove it.
 
 **(3)【Text-oriented replacement mode】**  
-With the text to be translated selected, press `Ctrl+X` (`⌘+X` on mac) twice within 1 second or click on the icon ![icno24.png](https://github.com/T3aHat/DeepLopener/raw/main/icon24.png) that appears after selecting the text.  
+With the text to be translated selected, press `Ctrl+Shift+K` (`⌘+Shift+K` on mac) twice within 1 second or click on the icon ![icno24.png](https://github.com/T3aHat/DeepLopener/raw/main/icon24.png) that appears after selecting the text.  
 ![text-oriented.gif](https://github.com/T3aHat/DeepLopener/blob/main/images/text-oriented.gif)  
 The selected text is highlighted in red first. After traslation , it turns yellow.  
 Right-click on the translation to display the original text.If you do it again, the letters will be toggled back to translation.  

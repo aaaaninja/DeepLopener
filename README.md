@@ -18,7 +18,7 @@ https://deeplopener.ml/DeepLopener/
 
 ## Text translation
 
-**(1)【layout-oriented replacement mode】**  
+**(1)【Layout-oriented replacement mode】**  
 Click the icon ![icon24.png](https://github.com/T3aHat/DeepLopener/raw/main/icon24.png) in the upper right corner
 or right-click without selecting the text,
 move the cursor and right-click to translate, and left-click to cancel to select.  
@@ -35,14 +35,14 @@ On PDF, select the text you want to translate and right-click on the text and cl
 For sites whose MIME type is `application/pdf` (local PDF files available!), the `transition mode` changes to `PDF mode` and the other modes are disabled.  
 You can move the translation frame around freely in Drag-and-Drop, and right-clicking on the translation result frame will remove it.
 
-**(3)【text-oriented replacement mode】**  
+**(3)【Text-oriented replacement mode】**  
 With the text to be translated selected, press `Ctrl+X` (`⌘+X` on mac) twice within 1 second or click on the icon ![icno24.png](https://github.com/T3aHat/DeepLopener/raw/main/icon24.png) that appears after selecting the text.  
 ![text-oriented.gif](https://github.com/T3aHat/DeepLopener/blob/main/images/text-oriented.gif)  
 The selected text is highlighted in red first. After traslation , it turns yellow.  
 Right-click on the translation to display the original text.If you do it again, the letters will be toggled back to translation.  
 It is recommended to use this mode separately from the layout-oriented replacement mode because the original layout will be destroyed.
 
-**(4)【transition mode】**  
+**(4)【Transition mode】**  
 Right click on the text you want to translate → Click on `DeepL:selected_text`.  
 ![openDeepL.gif](https://github.com/T3aHat/DeepLopener/blob/main/images/openDeepL.gif)  
 Move to https://www.deepl.com/translator#ja/en/selected_text
@@ -50,16 +50,22 @@ Move to https://www.deepl.com/translator#ja/en/selected_text
 **Usage**  
 The number of characters translated so far in the current billing period is displayed in the upper right icon.  
  ![usage.png](https://github.com/T3aHat/DeepLopener/raw/main/images/usage.png)  
- _I translated 11% (55000/500000) characters in the current billing period with DeepL API Free._
+ _I translated 11% (55000/500000) characters in the current billing period with DeepL API Free._  
+
+**ShortCuts**  
+Several modes can be executed by shortcuts.  
+These shortcuts can be edited from `chrome://extensions/shortcuts`  
+![shortcuts.png](https://github.com/T3aHat/DeepLopener/raw/main/images/shortcuts.png)  
+- Layout-oriented replacement mode: `Ctrl+Shift+L` (`⌘+Shift+L` on mac)
+- Text-oriented replacement mode: `Ctrl+X` (`⌘+X` on mac) twice within 1 second  
+
 
 ## Document translation
 
 ![doctrans.gif](https://github.com/T3aHat/DeepLopener/raw/main/images/doctrans.gif)
 
 Document files can be translated from v1.2.0!  
-Click
-<img src="https://github.com/T3aHat/DeepLopener/raw/main/earth.png"  height="20px"/>
-in the upper right corner of the popup window will take you to the document translation page.
+Click <img src="https://github.com/T3aHat/DeepLopener/raw/main/earth.png"  height="20px"/> in the upper right corner of the popup window will take you to the document translation page.  
 ![earthIcon.png](https://github.com/T3aHat/DeepLopener/raw/main/images/earthIcon.png)
 
 ### How to translate
@@ -69,14 +75,14 @@ in the upper right corner of the popup window will take you to the document tran
 1. Select a target language
 2. Choose documents you want to translate  
    The following file types and extensions are supported:
-
 - "docx" - Microsoft Word Document
 - "pptx" - Microsoft PowerPoint Document
-- "pdf" - Portable Document Format  
-  Please note that in order to translate PDF documents you need to give one-time consent to using the Adobe API via [the account interface](https://www.deepl.com/pro-account/translationSettings).
-  ![PDFTranslationSettings.png](https://github.com/T3aHat/DeepLopener/blob/main/images/PDFTranslationSettings.png)  
 - "htm / html" - HTML Document
 - "txt" - Plain Text Document  
+- "pdf" - Portable Document Format  
+  Please note that in order to translate PDF documents you need to give one-time consent to using the Adobe API via [the account interface](https://www.deepl.com/pro-account/translationSettings).  
+  ![PDFTranslationSettings.png](https://github.com/T3aHat/DeepLopener/blob/main/images/PDFTranslationSettings.png)  
+
   Please check out [the official reference document](https://www.deepl.com/docs-api/translating-documents/uploading/) for details.
 3. click `Translate` button and translate!
    Translation status will be shown in `Translation status`.
@@ -122,10 +128,10 @@ Please check the version of the API you are using and configure it appropriately
 # Q&A
 
 - I can't use page translation.  
-  →There are two main possibilities. The first is that the size of the page you want to translate is larger than 30kbytes. The second is CORS. In either case, please use the layout-oriented replacement mode instead. Please read the error codes in the Developer Tools for more information.
+  → There are two main possibilities. The first is that the size of the page you want to translate is larger than 30kbytes. The second is CORS. In either case, please use the layout-oriented replacement mode instead. Please read the error codes in the Developer Tools for more information.
 
 - I can't use PDF mode on local PDF files.  
-  →Ensure that the "Allow access to file URLs" is checked on options page of this extension like below.  
+  → Ensure that the "Allow access to file URLs" is checked on options page of this extension like below.  
    Improper settings may cause the translation to be performed in transition mode instead of PDF mode.  
   ![allowAccessToFileURL.png](https://github.com/T3aHat/DeepLopener/raw/main/images/allowAccessToFileURL.png)
 

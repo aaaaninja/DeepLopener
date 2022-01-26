@@ -9,6 +9,7 @@ if (document.contentType === "application/pdf") {
   ispdf = false;
 }
 let api_key;
+let timer = Date.now();
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message == "got_apikey") {
     if (request.error) {
@@ -42,6 +43,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     sendResponse(ispdf);
   } else if (request.message == "alertError") {
     alertError(request.res);
+  } else if (request.message == "TextOrientedCommand") {
+    if (Date.now() - timer < 1000) {
+      selectionTrans();
+    }
+    timer = Date.now();
   }
   return false;
 });
@@ -97,15 +103,6 @@ chrome.storage.sync.get(null, function (items) {
 });
 
 if (!ispdf) {
-  let timer = Date.now();
-  document.addEventListener("keydown", (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === "x") {
-      if (Date.now() - timer < 1000) {
-        selectionTrans();
-      }
-      timer = Date.now();
-    }
-  });
   chrome.runtime.onMessage.addListener(function (
     request,
     sender,
@@ -168,7 +165,7 @@ let translationId = 0;
 function selectionTrans() {
   del_iconNode();
   let selectTextList;
-  if (window.getSelection) {
+  if (window.getSelection().toString() != "") {
     selectTextList = window.getSelection().toString().split(/\n/g);
     for (var i = 0; i < selectTextList.length; i++) {
       selectTextList[i].replace(/[;；:：]/g, "\n");
@@ -180,27 +177,28 @@ function selectionTrans() {
         i -= 1;
       }
     }
-  } else {
-    selectTextList = [];
+    console.log(selectTextList);
+    let trelm = document.createElement("span");
+    trelm.className = "deeplopener_text_oriented";
+    trelm.setAttribute("id", "deeplopener_text_oriented" + selectionId);
+    trelm.innerHTML =
+      "<span class='deeplopener_translating'>" +
+      window.getSelection().toString().replace(/\n/g, "<br>") +
+      "</span>";
+    window.getSelection().getRangeAt(0).deleteContents();
+    window.getSelection().getRangeAt(0).insertNode(trelm);
+    window.getSelection().removeAllRanges();
+    if (selectTextList != []) {
+      apiTranslate(
+        false,
+        selectTextList,
+        "textOrientedMode",
+        selectionId,
+        translationId
+      );
+      selectionId++;
+    }
   }
-  let trelm = document.createElement("span");
-  trelm.className = "deeplopener_text_oriented";
-  trelm.setAttribute("id", "deeplopener_text_oriented" + selectionId);
-  trelm.innerHTML =
-    "<span class='deeplopener_translating'>" +
-    window.getSelection().toString().replace(/\n/g, "<br>") +
-    "</span>";
-  window.getSelection().getRangeAt(0).deleteContents();
-  window.getSelection().getRangeAt(0).insertNode(trelm);
-  window.getSelection().removeAllRanges();
-  apiTranslate(
-    false,
-    selectTextList,
-    "textOrientedMode",
-    selectionId,
-    translationId
-  );
-  selectionId++;
 }
 
 function del_iconNode() {

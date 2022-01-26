@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "DeepL opener",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "host_permissions": [
     "<all_urls>"
   ],
@@ -30,5 +30,27 @@
       "css": ["style.css"],
       "run_at": "document_start"
     }
-  ]
+  ],
+  "commands":{
+    "LayoutOrientedCommand": {
+      "description": "Layout-oriented replacement mode",
+      "suggested_key": { 
+        "default": "Ctrl+Shift+L",
+        "windows": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L",
+        "chromeos": "Ctrl+Shift+L",
+        "linux": "Ctrl+Shift+L"
+      }
+    },  
+    "TextOrientedCommand": {
+      "description": "Text-oriented replacement mode",
+      "suggested_key": { 
+        "default": "Ctrl+Shift+K",
+        "windows": "Ctrl+Shift+K",
+        "mac": "Command+Shift+K",
+        "chromeos": "Ctrl+Shift+K",
+        "linux": "Ctrl+Shift+K"
+      }
+    }
+  }
 }

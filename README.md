@@ -57,7 +57,7 @@ Several modes can be executed by shortcuts.
 These shortcuts can be edited from `chrome://extensions/shortcuts`  
 ![shortcuts.png](https://github.com/T3aHat/DeepLopener/raw/main/images/shortcuts.png)  
 - Layout-oriented replacement mode: `Ctrl+Shift+L` (`⌘+Shift+L` on mac)
-- Text-oriented replacement mode: `Ctrl+X` (`⌘+X` on mac) twice within 1 second  
+- Text-oriented replacement mode: `Ctrl+Shift+K` (`⌘+Shift+K` on mac) twice within 1 second  
 
 
 ## Document translation

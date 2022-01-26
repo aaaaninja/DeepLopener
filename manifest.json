@@ -45,11 +45,11 @@
     "TextOrientedCommand": {
       "description": "Text-oriented replacement mode",
       "suggested_key": { 
-        "default": "Ctrl+X",
-        "windows": "Ctrl+X",
-        "mac": "Command+X",
-        "chromeos": "Ctrl+X",
-        "linux": "Ctrl+X"
+        "default": "Ctrl+Shift+K",
+        "windows": "Ctrl+Shift+K",
+        "mac": "Command+Shift+K",
+        "chromeos": "Ctrl+Shift+K",
+        "linux": "Ctrl+Shift+K"
       }
     }
   }

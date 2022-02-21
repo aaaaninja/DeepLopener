@@ -1,7 +1,7 @@
 # DeepLopener
 
 [日本語解説記事](https://t3ahat.hateblo.jp/entry/How_to_use_DeepLopener)に日本語で詳しくインストール方法や使用方法を書いているので[こちら](https://t3ahat.hateblo.jp/entry/How_to_use_DeepLopener)を読んでください．  
-[How to use (YouTube) ](https://www.youtube.com/watch?v=dwysny4gwpc)
+[How to use (YouTube) ](https://www.youtube.com/watch?v=cHW5yKZlGGQ)
 
 This Google chrome extension can replace texts that you want to translate with translation results by DeepL(deepl.com) keepking the original style.  
 On pdf, this extension displays frames showing translated sentences.

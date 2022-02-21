@@ -21,6 +21,7 @@ with zipfile.ZipFile('DeepLopener.zip', 'w')as zf:
     zf.write('icon128.png')
     zf.write('file.png')
     zf.write('earth.png')
+    zf.write('LICENSE')
     for folder, subfolders, files in os.walk('_locales'):
         zf.write(folder)
         for file in files:

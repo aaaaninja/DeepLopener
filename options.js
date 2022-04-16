@@ -17,7 +17,7 @@ function save_options() {
   const apikeyEncryption = document.querySelector("#encryption_option").checked
 
   chrome.storage.local.set({ apikeyEncryption }, () => {
-    if (apikeyEncryption == false) {
+    if (apikeyEncryption === false) {
       chrome.storage.local.set({ target, iconflag, hoverflag, freeflag, deeplpro_apikey }, show_saved_text)
       return
     }
@@ -94,7 +94,16 @@ function restore_options() {
       descpar.querySelector(".description").style.display = "none";
     });
   });
-  chrome.storage.local.get(defaultValues, ({ apikeyEncryption }) => {
+  chrome.storage.local.get(defaultValues, (configuredValues) => {
+    if (configuredValues.apikeyEncryption === false) {
+      document.querySelector("#target").value = configuredValues.target
+      document.querySelector("#iconflag").value = configuredValues.iconflag
+      document.querySelector("#hoverflag").value = configuredValues.hoverflag
+      document.querySelector("#freeflag").value = configuredValues.freeflag
+      document.querySelector("#deeplpro_apikey").value = configuredValues.deeplpro_apikey
+      document.querySelector("#encryption_option").checked = configuredValues.apikeyEncryption
+      return save_options()
+    }
     chrome.storage.sync.get(defaultValues, function (items) {
         chrome.identity.getProfileUserInfo(null, function (info) {
           if (info.id == "" || info.email == "") {
@@ -141,7 +150,7 @@ function restore_options() {
             document.querySelector("#hoverflag").value = items.hoverflag;
             document.querySelector("#freeflag").value = items.freeflag;
             document.querySelector("#deeplpro_apikey").value = tmp3;
-            document.querySelector("#encryption_option").checked = apikeyEncryption;
+            document.querySelector("#encryption_option").checked = configuredValues.apikeyEncryption;
             save_options();
           }
         });

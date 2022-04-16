@@ -81,65 +81,68 @@ function restore_options() {
       descpar.querySelector(".description").style.display = "none";
     });
   });
-  chrome.storage.sync.get(
-    {
-      target: "EN-US",
-      iconflag: "Enable",
-      hoverflag: "Enable",
-      freeflag: "Free",
-      deeplpro_apikey: "",
-    },
-    function (items) {
-      chrome.identity.getProfileUserInfo(null, function (info) {
-        if (info.id == "" || info.email == "") {
-          document.querySelector("#apitestm").style.color = "red";
-          document.querySelector("#apitestm").innerHTML = errHTML;
-        } else {
-          let tmp = 0;
-          let tmp2 = 1;
-          let len = 0;
-          if (info.id.length < info.email.length) {
-            len = info.id.length;
+  chrome.storage.local.get({ apikeyEncryption: true }, ({ apikeyEncryption }) => {
+    chrome.storage.sync.get(
+      {
+        target: "EN-US",
+        iconflag: "Enable",
+        hoverflag: "Enable",
+        freeflag: "Free",
+        deeplpro_apikey: "",
+      },
+      function (items) {
+        chrome.identity.getProfileUserInfo(null, function (info) {
+          if (info.id == "" || info.email == "") {
+            document.querySelector("#apitestm").style.color = "red";
+            document.querySelector("#apitestm").innerHTML = errHTML;
           } else {
-            len = info.email.length;
+            let tmp = 0;
+            let tmp2 = 1;
+            let len = 0;
+            if (info.id.length < info.email.length) {
+              len = info.id.length;
+            } else {
+              len = info.email.length;
+            }
+            for (let i = 0; i < len; i++) {
+              tmp += info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
+              tmp2 *= info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
+            }
+            let foo = [];
+            for (
+              let i = Math.round(String(tmp2).length / 2);
+              i < String(tmp2).length;
+              i++
+            ) {
+              foo.push(
+                String(tmp2).charCodeAt(i) *
+                  String(tmp2).charCodeAt(i - Math.round(String(tmp2).length / 2))
+              );
+            }
+            let gtlen = 0;
+            if (items.deeplpro_apikey.length < foo.length) {
+              gtlen = items.deeplpro_apikey.length;
+            } else {
+              gtlen = foo.length;
+            }
+            let tmp3 = "";
+            for (let i = 0; i < items.deeplpro_apikey.length; i++) {
+              tmp3 += String.fromCharCode(
+                (items.deeplpro_apikey[i] - foo[i % gtlen]) / tmp
+              );
+            }
+            document.querySelector("#target").value = items.target;
+            document.querySelector("#iconflag").value = items.iconflag;
+            document.querySelector("#hoverflag").value = items.hoverflag;
+            document.querySelector("#freeflag").value = items.freeflag;
+            document.querySelector("#deeplpro_apikey").value = tmp3;
+            document.querySelector("#encryption_option").checked = apikeyEncryption;
+            save_options();
           }
-          for (let i = 0; i < len; i++) {
-            tmp += info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
-            tmp2 *= info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
-          }
-          let foo = [];
-          for (
-            let i = Math.round(String(tmp2).length / 2);
-            i < String(tmp2).length;
-            i++
-          ) {
-            foo.push(
-              String(tmp2).charCodeAt(i) *
-                String(tmp2).charCodeAt(i - Math.round(String(tmp2).length / 2))
-            );
-          }
-          let gtlen = 0;
-          if (items.deeplpro_apikey.length < foo.length) {
-            gtlen = items.deeplpro_apikey.length;
-          } else {
-            gtlen = foo.length;
-          }
-          let tmp3 = "";
-          for (let i = 0; i < items.deeplpro_apikey.length; i++) {
-            tmp3 += String.fromCharCode(
-              (items.deeplpro_apikey[i] - foo[i % gtlen]) / tmp
-            );
-          }
-          document.querySelector("#target").value = items.target;
-          document.querySelector("#iconflag").value = items.iconflag;
-          document.querySelector("#hoverflag").value = items.hoverflag;
-          document.querySelector("#freeflag").value = items.freeflag;
-          document.querySelector("#deeplpro_apikey").value = tmp3;
-          save_options();
-        }
-      });
-    }
-  );
+        });
+      }
+    )
+  })
 }
 
 function api_test() {

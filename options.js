@@ -1,7 +1,24 @@
+const defaultValues = {
+  target: "EN-US",
+  iconflag: "Enable",
+  hoverflag: "Enable",
+  freeflag: "Free",
+  deeplpro_apikey: "",
+  apikeyEncryption: true
+}
+
 function save_options() {
   if (document.querySelector("#deeplpro_apikey").value == undefined) {
     document.querySelector("#deeplpro_apikey").value = "";
   }
+  // current values
+  const target = document.querySelector("#target").value
+  const iconflag = document.querySelector("#iconflag").value
+  const hoverflag = document.querySelector("#hoverflag").value
+  const freeflag = document.querySelector("#freeflag").value
+  const deeplpro_apikey = document.querySelector("#deeplpro_apikey").value
+  const apikeyEncryption = document.querySelector("#encryption_option").checked
+
   chrome.identity.getProfileUserInfo(null, function (info) {
     if (info.id == "" || info.email == "") {
       document.querySelector("#apitestm").style.color = "red";
@@ -51,10 +68,7 @@ function save_options() {
       }
       chrome.storage.sync.set(
         {
-          target: document.querySelector("#target").value,
-          iconflag: document.querySelector("#iconflag").value,
-          hoverflag: document.querySelector("#hoverflag").value,
-          freeflag: document.querySelector("#freeflag").value,
+          target, iconflag, hoverflag, freeflag,
           deeplpro_apikey: tmplist,
         },
         function () {
@@ -81,16 +95,8 @@ function restore_options() {
       descpar.querySelector(".description").style.display = "none";
     });
   });
-  chrome.storage.local.get({ apikeyEncryption: true }, ({ apikeyEncryption }) => {
-    chrome.storage.sync.get(
-      {
-        target: "EN-US",
-        iconflag: "Enable",
-        hoverflag: "Enable",
-        freeflag: "Free",
-        deeplpro_apikey: "",
-      },
-      function (items) {
+  chrome.storage.local.get(defaultValues, ({ apikeyEncryption }) => {
+    chrome.storage.sync.get(defaultValues, function (items) {
         chrome.identity.getProfileUserInfo(null, function (info) {
           if (info.id == "" || info.email == "") {
             document.querySelector("#apitestm").style.color = "red";

@@ -27,52 +27,10 @@ function save_options() {
         document.querySelector("#apitestm").style.color = "red";
         document.querySelector("#apitestm").innerHTML = errHTML;
       } else {
-        let tmp = 0;
-        let tmp2 = 1;
-        let len = 0;
-        if (info.id.length < info.email.length) {
-          len = info.id.length;
-        } else {
-          len = info.email.length;
-        }
-        for (let i = 0; i < len; i++) {
-          tmp += info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
-          tmp2 *= info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
-        }
-        let foo = [];
-        for (
-          let i = Math.round(String(tmp2).length / 2);
-          i < String(tmp2).length;
-          i++
-        ) {
-          foo.push(
-            String(tmp2).charCodeAt(i) *
-              String(tmp2).charCodeAt(i - Math.round(String(tmp2).length / 2))
-          );
-        }
-        let tmplist = [];
-        let gtlen = 0;
-        if (
-          document.querySelector("#deeplpro_apikey").value.length < foo.length
-        ) {
-          gtlen = document.querySelector("#deeplpro_apikey").value.length;
-        } else {
-          gtlen = foo.length;
-        }
-        for (
-          let i = 0;
-          i < document.querySelector("#deeplpro_apikey").value.length;
-          i++
-        ) {
-          tmplist.push(
-            document.querySelector("#deeplpro_apikey").value.charCodeAt(i) * tmp +
-              foo[i % gtlen]
-          );
-        }
         chrome.storage.sync.set(
           {
             target, iconflag, hoverflag, freeflag,
-            deeplpro_apikey: tmplist,
+            deeplpro_apikey: encrypt(info.id, info.email, deeplpro_apikey),
           },
           show_saved_text
         );
@@ -110,46 +68,11 @@ function restore_options() {
             document.querySelector("#apitestm").style.color = "red";
             document.querySelector("#apitestm").innerHTML = errHTML;
           } else {
-            let tmp = 0;
-            let tmp2 = 1;
-            let len = 0;
-            if (info.id.length < info.email.length) {
-              len = info.id.length;
-            } else {
-              len = info.email.length;
-            }
-            for (let i = 0; i < len; i++) {
-              tmp += info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
-              tmp2 *= info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
-            }
-            let foo = [];
-            for (
-              let i = Math.round(String(tmp2).length / 2);
-              i < String(tmp2).length;
-              i++
-            ) {
-              foo.push(
-                String(tmp2).charCodeAt(i) *
-                  String(tmp2).charCodeAt(i - Math.round(String(tmp2).length / 2))
-              );
-            }
-            let gtlen = 0;
-            if (items.deeplpro_apikey.length < foo.length) {
-              gtlen = items.deeplpro_apikey.length;
-            } else {
-              gtlen = foo.length;
-            }
-            let tmp3 = "";
-            for (let i = 0; i < items.deeplpro_apikey.length; i++) {
-              tmp3 += String.fromCharCode(
-                (items.deeplpro_apikey[i] - foo[i % gtlen]) / tmp
-              );
-            }
             document.querySelector("#target").value = items.target;
             document.querySelector("#iconflag").value = items.iconflag;
             document.querySelector("#hoverflag").value = items.hoverflag;
             document.querySelector("#freeflag").value = items.freeflag;
-            document.querySelector("#deeplpro_apikey").value = tmp3;
+            document.querySelector("#deeplpro_apikey").value = decrypt(info.id, info.email, items.deeplpro_apikey);
             document.querySelector("#encryption_option").checked = configuredValues.apikeyEncryption;
             save_options();
           }
@@ -344,4 +267,95 @@ function show_saved_text() {
   setTimeout(function () {
     save.textContent = "";
   }, 1500);
+}
+
+// salt1 ex. -> String "113115274752392254562"
+// salt2 ex. -> String "hoge@example.com"
+function encrypt(salt1, salt2, targetKey) {
+  let tmp = 0;
+  let tmp2 = 1;
+  let len = 0;
+  if (salt1.length < salt2.length) {
+    len = salt1.length;
+  } else {
+    len = salt2.length;
+  }
+  for (let i = 0; i < len; i++) {
+    tmp += salt1.charCodeAt(i) * salt2.charCodeAt(len - i - 1);
+    tmp2 *= salt1.charCodeAt(i) * salt2.charCodeAt(len - i - 1);
+  }
+  let foo = [];
+  for (
+    let i = Math.round(String(tmp2).length / 2);
+    i < String(tmp2).length;
+    i++
+  ) {
+    foo.push(
+      String(tmp2).charCodeAt(i) *
+        String(tmp2).charCodeAt(i - Math.round(String(tmp2).length / 2))
+    );
+  }
+  let tmplist = [];
+  let gtlen = 0;
+  if (
+    targetKey.length < foo.length
+  ) {
+    gtlen = targetKey.length;
+  } else {
+    gtlen = foo.length;
+  }
+  for (
+    let i = 0;
+    i < targetKey.length;
+    i++
+  ) {
+    tmplist.push(
+      targetKey.charCodeAt(i) * tmp +
+        foo[i % gtlen]
+    );
+  }
+
+  return tmplist // example. Array [9560484, 4923452, 9560890, 4544880, 5018570, 9469327]
+}
+
+// salt1 ex. -> String "113115274752392254562"
+// salt2 ex. -> String "hoge@example.com"
+function decrypt(salt1, salt2, encryptedArray) {
+  let tmp = 0;
+  let tmp2 = 1;
+  let len = 0;
+  if (salt1.length < salt2.length) {
+    len = salt1.length;
+  } else {
+    len = salt2.length;
+  }
+  for (let i = 0; i < len; i++) {
+    tmp += salt1.charCodeAt(i) * salt2.charCodeAt(len - i - 1);
+    tmp2 *= salt1.charCodeAt(i) * salt2.charCodeAt(len - i - 1);
+  }
+  let foo = [];
+  for (
+    let i = Math.round(String(tmp2).length / 2);
+    i < String(tmp2).length;
+    i++
+  ) {
+    foo.push(
+      String(tmp2).charCodeAt(i) *
+        String(tmp2).charCodeAt(i - Math.round(String(tmp2).length / 2))
+    );
+  }
+  let gtlen = 0;
+  if (encryptedArray.length < foo.length) {
+    gtlen = encryptedArray.length;
+  } else {
+    gtlen = foo.length;
+  }
+  let tmp3 = "";
+  for (let i = 0; i < encryptedArray.length; i++) {
+    tmp3 += String.fromCharCode(
+      (encryptedArray[i] - foo[i % gtlen]) / tmp
+    );
+  }
+
+  return tmp3; // example String hogefugapiyo
 }

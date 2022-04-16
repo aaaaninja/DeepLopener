@@ -8,9 +8,6 @@ const defaultValues = {
 }
 
 function save_options() {
-  if (document.querySelector("#deeplpro_apikey").value == undefined) {
-    document.querySelector("#deeplpro_apikey").value = "";
-  }
   // current values
   const target = document.querySelector("#target").value
   const iconflag = document.querySelector("#iconflag").value
@@ -19,71 +16,73 @@ function save_options() {
   const deeplpro_apikey = document.querySelector("#deeplpro_apikey").value
   const apikeyEncryption = document.querySelector("#encryption_option").checked
 
-  chrome.identity.getProfileUserInfo(null, function (info) {
-    if (info.id == "" || info.email == "") {
-      document.querySelector("#apitestm").style.color = "red";
-      document.querySelector("#apitestm").innerHTML = errHTML;
-    } else {
-      let tmp = 0;
-      let tmp2 = 1;
-      let len = 0;
-      if (info.id.length < info.email.length) {
-        len = info.id.length;
-      } else {
-        len = info.email.length;
-      }
-      for (let i = 0; i < len; i++) {
-        tmp += info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
-        tmp2 *= info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
-      }
-      let foo = [];
-      for (
-        let i = Math.round(String(tmp2).length / 2);
-        i < String(tmp2).length;
-        i++
-      ) {
-        foo.push(
-          String(tmp2).charCodeAt(i) *
-            String(tmp2).charCodeAt(i - Math.round(String(tmp2).length / 2))
-        );
-      }
-      let tmplist = [];
-      let gtlen = 0;
-      if (
-        document.querySelector("#deeplpro_apikey").value.length < foo.length
-      ) {
-        gtlen = document.querySelector("#deeplpro_apikey").value.length;
-      } else {
-        gtlen = foo.length;
-      }
-      for (
-        let i = 0;
-        i < document.querySelector("#deeplpro_apikey").value.length;
-        i++
-      ) {
-        tmplist.push(
-          document.querySelector("#deeplpro_apikey").value.charCodeAt(i) * tmp +
-            foo[i % gtlen]
-        );
-      }
-      chrome.storage.sync.set(
-        {
-          target, iconflag, hoverflag, freeflag,
-          deeplpro_apikey: tmplist,
-        },
-        function () {
-          let save = document.querySelector("#message");
-          save.textContent = "Saved!";
-          setTimeout(function () {
-            save.textContent = "";
-          }, 1500);
-        }
-      );
+  chrome.storage.local.set({ apikeyEncryption }, () => {
+    if (apikeyEncryption == false) {
+      chrome.storage.local.set({ target, iconflag, hoverflag, freeflag, deeplpro_apikey }, show_saved_text)
+      return
     }
-  });
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    for (let i = 1; i < tabs.length; i++) chrome.tabs.reload(tabs[i].id);
-  });
+    
+    chrome.identity.getProfileUserInfo(null, function (info) {
+      if (info.id == "" || info.email == "") {
+        document.querySelector("#apitestm").style.color = "red";
+        document.querySelector("#apitestm").innerHTML = errHTML;
+      } else {
+        let tmp = 0;
+        let tmp2 = 1;
+        let len = 0;
+        if (info.id.length < info.email.length) {
+          len = info.id.length;
+        } else {
+          len = info.email.length;
+        }
+        for (let i = 0; i < len; i++) {
+          tmp += info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
+          tmp2 *= info.id.charCodeAt(i) * info.email.charCodeAt(len - i - 1);
+        }
+        let foo = [];
+        for (
+          let i = Math.round(String(tmp2).length / 2);
+          i < String(tmp2).length;
+          i++
+        ) {
+          foo.push(
+            String(tmp2).charCodeAt(i) *
+              String(tmp2).charCodeAt(i - Math.round(String(tmp2).length / 2))
+          );
+        }
+        let tmplist = [];
+        let gtlen = 0;
+        if (
+          document.querySelector("#deeplpro_apikey").value.length < foo.length
+        ) {
+          gtlen = document.querySelector("#deeplpro_apikey").value.length;
+        } else {
+          gtlen = foo.length;
+        }
+        for (
+          let i = 0;
+          i < document.querySelector("#deeplpro_apikey").value.length;
+          i++
+        ) {
+          tmplist.push(
+            document.querySelector("#deeplpro_apikey").value.charCodeAt(i) * tmp +
+              foo[i % gtlen]
+          );
+        }
+        chrome.storage.sync.set(
+          {
+            target, iconflag, hoverflag, freeflag,
+            deeplpro_apikey: tmplist,
+          },
+          show_saved_text
+        );
+      }
+    })
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      for (let i = 1; i < tabs.length; i++) chrome.tabs.reload(tabs[i].id);
+    })
+  })
 }
 
 function restore_options() {
@@ -329,3 +328,11 @@ const errHTML =
 document.addEventListener("DOMContentLoaded", restore_options);
 document.querySelector("#save").addEventListener("click", save_options);
 document.querySelector("#apitest").addEventListener("click", api_test);
+
+function show_saved_text() {
+  let save = document.querySelector("#message");
+  save.textContent = "Saved!";
+  setTimeout(function () {
+    save.textContent = "";
+  }, 1500);
+}
